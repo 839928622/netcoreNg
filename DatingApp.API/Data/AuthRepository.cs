@@ -19,7 +19,7 @@ namespace DatingApp.API.Data
             if(user==null)
             return null;
 
-            if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt))
+            if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)) // 该用户存在，从数据库提取hash和salt
             return null;
 
             return user;
@@ -31,13 +31,13 @@ namespace DatingApp.API.Data
              using(var hmac=new System.Security.Cryptography.HMACSHA512(passwordSalt))
             {
            
-            var computeHash=hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                var computeHash=hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
 
-            for(int i=0;i < computeHash.Length;i++)
-            {
-                if(computeHash[i] != passwordHash[i])
-                return false;
-            }
+                for(int i=0;i < computeHash.Length;i++)
+                    {
+                        if(computeHash[i] != passwordHash[i])
+                        return false;
+                    }
 
             }
             return true;
