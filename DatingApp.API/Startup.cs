@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DatingApp.API
 {
@@ -31,6 +34,23 @@ namespace DatingApp.API
             services.AddDbContext<DataContext>(d =>d.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
             services.AddCors(); //允许夸源访问
             services.AddScoped<IAuthRepository,AuthRepository>();
+            
+            // 这里是告诉 mvc 我们使用何种Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options=>{
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                ValidateIssuerSigningKey = true,
+                 IssuerSigningKey = new SymmetricSecurityKey(
+                     Encoding
+                     .ASCII
+                     .GetBytes(Configuration.GetSection("AppSettings:Token").Value)), // 由于我们的key是字符串，因此要转换为byte[] 
+                    ValidateIssuer = false, // 由于是本地项目 设置为false
+                    ValidateAudience = false // localhost 
+
+             };
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +68,7 @@ namespace DatingApp.API
 
             // app.UseHttpsRedirection();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseAuthentication();// 上面配置好 authentication 这里要use ,效果是控制器上任何有authorize的，都会受到保护
             app.UseMvc();
         }
     }
