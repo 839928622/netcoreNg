@@ -29,7 +29,8 @@ namespace DatingApp.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<DataContext>(d =>d.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
-            services.AddCors();
+            services.AddCors(); //允许夸源访问
+            services.AddScoped<IAuthRepository,AuthRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
