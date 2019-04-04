@@ -13,8 +13,7 @@ export class NavComponent implements OnInit {
   ngOnInit() {
   }
 
-  login()
-  {
+  login() {
     // console.log(this.model); 下面使用service的内部方法 login
     this.authService.login(this.model).subscribe(next => {
      console.log('登录成功');
@@ -23,5 +22,15 @@ export class NavComponent implements OnInit {
       console.log('登录失败');
     }
     );
+  }
+
+  loggedIn() {
+   const token = localStorage.getItem('token');
+   return !!token; // 如果token有值，则返回true
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    console.log('登出');
   }
 }
