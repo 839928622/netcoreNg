@@ -22,9 +22,7 @@ namespace DatingApp.API.Controllers
 
         public AuthController(IAuthRepository repo,IConfiguration config)
         {
-            
-
-            _repo = repo;
+             _repo = repo;
             _config = config;
         }
 
