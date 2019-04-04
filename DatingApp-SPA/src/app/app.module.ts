@@ -17,7 +17,7 @@ import { RegisterComponent } from './register/register.component';
    declarations: [
       AppComponent,
       ValueComponent,
-      //使用自动生成组件的方式，会自动把组件加载进来,
+      // 使用自动生成组件的方式，会自动把组件加载进来,
       NavComponent,
       HomeComponent,
       RegisterComponent
@@ -26,7 +26,8 @@ import { RegisterComponent } from './register/register.component';
       BrowserModule,
       AppRoutingModule,
       HttpClientModule,
-      //引入这个模组之后，我们就可以使用该模组提供的service，比如httpclient，可以用来发送get请求\\r\\nFormsModule
+      // 引入这个模组之后，我们就可以使用该模组提供的service，比如httpclient，可以用来发送get请求\\r\\nFormsModule
+      FormsModule // 引入表单模组 如果没有该模组 nav 上的表单会报错
    ],
    providers: [
       AuthService
