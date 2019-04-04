@@ -1,3 +1,4 @@
+import { AuthService } from './../../../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,13 +8,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
  model: any = {};
-  constructor() { }
+  constructor(private authService: AuthService) { } // 注入我们需要的 service
 
   ngOnInit() {
   }
 
   login()
   {
-    console.log(this.model);
+    // console.log(this.model); 下面使用service的内部方法 login
+    this.authService.login(this.model).subscribe(next => {
+     console.log('登录成功');
+
+    }, error => {
+      console.log('登录失败');
+    }
+    );
   }
 }
