@@ -19,7 +19,7 @@ export class NavComponent implements OnInit {
      console.log('登录成功');
 
     }, error => {
-      console.log('登录失败');
+      console.log(error); // ErrorInterceptor使用之后，直接打error
     }
     );
   }

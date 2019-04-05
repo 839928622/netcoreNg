@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
+import { ErrorInterceptorProvider } from '_services/error.interceptor';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { RegisterComponent } from './register/register.component';
       FormsModule // 引入表单模组 如果没有该模组 nav 上的表单会报错
    ],
    providers: [
-      AuthService
+      AuthService,
+      ErrorInterceptorProvider
    ],
    bootstrap: [
       AppComponent
