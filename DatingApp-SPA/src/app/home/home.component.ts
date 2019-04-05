@@ -8,25 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 registerMode = false;
-values: any;
+// values: any;
   constructor(private http: HttpClient) { }
 
   ngOnInit() {
-    this.getValues();
+    // this.getValues();
   }
   registerToggle() {
     this.registerMode = !this.registerMode;
   }
 
-  getValues() {
-    this.http.get('http://localhost:5000/api/values').subscribe(response => { // response表示一个callback，回调函数
-                  this.values = response;
-                 },
-    error => { // 发生错误执行的方法
-      console.log(error);
-    }
-    );
-  }
+  // getValues() {
+  //   this.http.get('http://localhost:5000/api/values').subscribe(response => { // response表示一个callback，回调函数
+  //                 this.values = response;
+  //                },
+  //   error => { // 发生错误执行的方法
+  //     console.log(error);
+  //   }
+  //   );
+  // }
 
   canCancleRegisterMode(registerMode: boolean) {
   // tslint:disable-next-line:max-line-length
