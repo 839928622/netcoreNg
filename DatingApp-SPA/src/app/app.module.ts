@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 
 import { NavComponent } from './Nav/Nav.component';
 import { FormsModule } from '@angular/forms';
+import { BsDropdownModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -28,7 +29,8 @@ import { ErrorInterceptorProvider } from '_services/error.interceptor';
       AppRoutingModule,
       HttpClientModule,
       // 引入这个模组之后，我们就可以使用该模组提供的service，比如httpclient，可以用来发送get请求\\r\\nFormsModule
-      FormsModule // 引入表单模组 如果没有该模组 nav 上的表单会报错
+      FormsModule, // 引入表单模组 如果没有该模组 nav 上的表单会报错
+      BsDropdownModule.forRoot()
    ],
    providers: [
       AuthService,
