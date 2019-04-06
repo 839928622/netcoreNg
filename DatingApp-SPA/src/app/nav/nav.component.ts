@@ -1,6 +1,7 @@
 import { AlertifyService } from './../../../_services/alertify.service';
 import { AuthService } from './../../../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav',
@@ -9,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavComponent implements OnInit {
  model: any = {};
-  constructor(private authService: AuthService, private alertify: AlertifyService) { } // 注入我们需要的 service
+  constructor(private authService: AuthService, private alertify: AlertifyService, private router: Router) { } // 注入我们需要的 service
 
   ngOnInit() {
   }
@@ -23,7 +24,10 @@ export class NavComponent implements OnInit {
     }, error => {
       this.alertify.error('用户名或密码不正确'); // 使用alertify的错误提示方法
       // console.log(error); // ErrorInterceptor使用之后，直接打error
+    }, () => {
+     this.router.navigate(['/members']); // 登录成功后路由到member
     }
+
     );
   }
 
@@ -37,5 +41,6 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('token');
     this.alertify.message('您已退出');
   //  console.log('登出');
+    this.router.navigate(['/home']); // 退出后路由至home 主页
   }
 }
