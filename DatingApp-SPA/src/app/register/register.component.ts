@@ -1,3 +1,4 @@
+import { AlertifyService } from './../../../_services/alertify.service';
 import { AuthService } from './../../../_services/auth.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
@@ -10,7 +11,7 @@ export class RegisterComponent implements OnInit {
   // @Input() valuesFromHome: any; 为了感受ng的组件通信功能
   @Output() cancelRegister = new EventEmitter();
 model: any = {}; // 空对象
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private alertify: AlertifyService) { }
 
   ngOnInit() {
   }
@@ -18,9 +19,11 @@ model: any = {}; // 空对象
   register() {
     // console.log(this.model);
     this.authService.register(this.model).subscribe(() => {
-                    console.log('注册成功');
+                   this.alertify.success('注册成功');
+                   // console.log('注册成功');
                   }, error => {
-                    console.log(error + '注册失败');
+                   this.alertify.error(error);
+                  //  console.log(error + '注册失败');
                   }
                   );
   }
