@@ -28,8 +28,9 @@ export class NavComponent implements OnInit {
   }
 
   loggedIn() {
-   const token = localStorage.getItem('token');
-   return !!token; // 如果token有值，则返回true
+  //  const token = localStorage.getItem('token');
+  //  return !!token; // 如果token有值，则返回true
+  return this.authService.loggedIn();
   }
 
   logout() {

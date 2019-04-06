@@ -29,7 +29,7 @@
 
         <div *ngIf="loggedIn()" class="dropdown"> <!--loggedIn()返回为真，渲染dom-->
           <a class="dropdown-toggle text-light">
-            欢迎您
+            欢迎您 {{authService.decodedToken?.unique_name}}
           </a>
         
           <div class="dropdown-menu">
