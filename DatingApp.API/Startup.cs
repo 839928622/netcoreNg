@@ -34,11 +34,17 @@ namespace DatingApp.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddJsonOptions(options => {
+              options.SerializerSettings.ReferenceLoopHandling = 
+                      Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
             services.AddDbContext<DataContext>(d =>d.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
             services.AddCors(); //允许夸源访问
             services.AddTransient<Seed>();
-            services.AddScoped<IAuthRepository,AuthRepository>();
+            services.AddScoped<IAuthRepository,AuthRepository>(); // 对于注入服务的这种理解需要加强 目前还不了解
+            services.AddScoped<IDatingRepository,DatingRepository>();
             
             // 这里是告诉 mvc 我们使用何种Authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
