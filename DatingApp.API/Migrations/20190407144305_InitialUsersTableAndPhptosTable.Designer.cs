@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190407140646_ModifiedColumnIntroduction")]
-    partial class ModifiedColumnIntroduction
+    [Migration("20190407144305_InitialUsersTableAndPhptosTable")]
+    partial class InitialUsersTableAndPhptosTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,7 +57,7 @@ namespace DatingApp.API.Migrations
 
                     b.Property<string>("Interests");
 
-                    b.Property<string>("Introdution");
+                    b.Property<string>("Introduction");
 
                     b.Property<string>("KnowAs");
 
