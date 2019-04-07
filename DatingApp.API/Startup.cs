@@ -37,6 +37,7 @@ namespace DatingApp.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<DataContext>(d =>d.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
             services.AddCors(); //允许夸源访问
+            services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository,AuthRepository>();
             
             // 这里是告诉 mvc 我们使用何种Authentication
@@ -58,7 +59,7 @@ namespace DatingApp.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
             if (env.IsDevelopment())
             {
@@ -88,6 +89,7 @@ namespace DatingApp.API
             }
 
             // app.UseHttpsRedirection();
+            //seeder.SeedUsers();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();// 上面配置好 authentication 这里要use ,效果是控制器上任何有authorize的，都会受到保护
             app.UseMvc();
