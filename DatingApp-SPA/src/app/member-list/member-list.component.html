@@ -1,3 +1,7 @@
-<p>
-  member-list works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2 col-md-3 col-sm-6">
+      <p *ngFor="let user of users">{{user.knowAs}}</p>
+    </div> <!--col-lg-2 表示符合该大屏幕的话显示6列  中屏幕显示4列 小屏幕显示2列-->
+  </div>
+</div>

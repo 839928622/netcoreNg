@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ // Injectable 装饰器 允许我们注入别的东西到 当前这个service
   providedIn: 'root'
 })
 export class AuthService {
 
-  baseUrl = 'http://localhost:5000/api/auth/'; // import { JwtHelperService } from '@auth0/angular-jwt';
+  baseUrl = environment.apiUrl + 'auth/'; // import { JwtHelperService } from '@auth0/angular-jwt';
   jwtHelper = new JwtHelperService();
   decodedToken: any; // 用于解码token中的用户信息
 
