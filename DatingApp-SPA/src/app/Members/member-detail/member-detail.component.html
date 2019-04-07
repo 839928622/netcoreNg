@@ -1,0 +1,64 @@
+<div class="container mt-4">
+   <div class="row">
+     <div class="col-sm-4">
+     <div class="card">
+       <img class="card-img-top img-thumbnail" src="{{user?.photoUrl}}" alt="{{user?.knowAs}}">
+       <div class="card-body">
+         <div>
+           <strong>城市：</strong>
+           <p>{{user?.city}},{{user?.country}}</p>
+         </div>
+         <div>
+           <strong>年龄：</strong>
+           <p>{{user?.age}}</p>
+         </div>
+         <div>
+            <strong>上一次访问：</strong>
+            <p>{{user?.lastActive}}</p>
+          </div>
+          <div>
+              <strong>创建于：</strong>
+              <p>{{user?.created}}</p>
+            </div>
+       </div>
+       <div class="card-footer">
+         <div class="btn-group d-flex">
+           <button class="btn btn-primary w-100">点赞</button>
+           <button class="btn btn-success w-100">发消息</button>
+         </div>
+       </div>
+     </div>
+     </div>
+     <div class="col-sm-8">
+    <div class="tab-panel">
+      <tabset>
+        <tab heading="关于我 {{user?.knowAs}}">
+          <h4>自我介绍</h4>
+          <p>{{user?.introduction}}</p>
+          <h4>我在寻找</h4>
+          <p>{{user?.lookingFor}}</p>
+        </tab>
+
+        <tab heading="兴趣爱好">
+            <h4>爱好</h4>
+            <p>{{user?.interests}}</p>
+           
+          </tab>
+
+          <tab heading="相片">
+             
+              <p>我是图片</p>
+             
+            </tab>
+        
+            <tab heading="消息">
+                
+                <p>我是消息</p>
+               
+              </tab>
+
+      </tabset>
+    </div>
+     </div>
+   </div>
+</div>

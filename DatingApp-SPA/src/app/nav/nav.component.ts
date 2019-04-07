@@ -41,6 +41,6 @@ export class NavComponent implements OnInit {
     localStorage.removeItem('token');
     this.alertify.message('您已退出');
   //  console.log('登出');
-    this.router.navigate(['/home']); // 退出后路由至home 主页
+    this.router.navigate(['']); // 退出后,会命中路由第一个规则，然后路由至home 主页
   }
 }

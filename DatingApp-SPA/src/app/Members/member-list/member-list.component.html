@@ -1,0 +1,8 @@
+<div class="container mt-5">
+  <div class="row">
+    <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
+
+     <app-member-card [user]="user"></app-member-card>
+    </div> <!--col-lg-2 表示符合该大屏幕的话显示6列  中屏幕显示4列 小屏幕显示2列-->
+  </div>
+</div>

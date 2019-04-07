@@ -9,8 +9,9 @@ export interface User {
     lastActive: Date;
     photoUrl: string;
     city: string;
+    country: string;
     interests?: string;
-    introdaction?: string;
+    introduction?: string;
     lookingFor?: string;
     photo?: Photo[];
 }

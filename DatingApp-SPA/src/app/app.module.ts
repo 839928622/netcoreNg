@@ -12,16 +12,22 @@ import { AppComponent } from './app.component';
 
 import { NavComponent } from './Nav/Nav.component';
 import { FormsModule } from '@angular/forms';
-import { BsDropdownModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from '_services/error.interceptor';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './Members/member-list/member-list.component';
 import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
+import { MemberCardComponent } from './Members/Member-card/Member-card.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { MemberDetailComponent } from './Members/member-detail/member-detail.component';
 
+export function tokenGetter() {
+   return localStorage.getItem('token');
+}
 
 @NgModule({
    declarations: [
@@ -32,7 +38,10 @@ import { RouterModule } from '@angular/router';
       RegisterComponent,
       MemberListComponent,
       ListsComponent,
-      MessagesComponent
+      MessagesComponent,
+      MemberCardComponent,
+      MemberDetailComponent
+
    ],
    imports: [
       BrowserModule,
@@ -41,7 +50,15 @@ import { RouterModule } from '@angular/router';
       // 引入这个模组之后，我们就可以使用该模组提供的service，比如httpclient，可以用来发送get请求
       FormsModule,
       // 引入表单模组如果没有该模组nav上的表单会报错
-      BsDropdownModule.forRoot()
+      BsDropdownModule.forRoot(),
+      JwtModule.forRoot({
+         config: {
+            tokenGetter: (tokenGetter),
+            whitelistedDomains: ['localhost:5000'],
+            blacklistedRoutes: ['localhost:5000/api/auti']
+         }
+      }),
+      TabsModule.forRoot()
    ],
    providers: [
       AuthService,

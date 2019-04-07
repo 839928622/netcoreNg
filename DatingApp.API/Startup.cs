@@ -97,7 +97,7 @@ namespace DatingApp.API
             }
 
             // app.UseHttpsRedirection();
-            //seeder.SeedUsers();
+            seeder.SeedUsers();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();// 上面配置好 authentication 这里要use ,效果是控制器上任何有authorize的，都会受到保护
             app.UseMvc();
