@@ -6,19 +6,19 @@
        <div class="card-body">
          <div>
            <strong>城市：</strong>
-           <p>{{user?.city}},{{user?.country}}</p>
+           <p>{{user.city}},{{user.country}}</p>
          </div>
          <div>
            <strong>年龄：</strong>
-           <p>{{user?.age}}</p>
+           <p>{{user.age}}</p>
          </div>
          <div>
             <strong>上一次访问：</strong>
-            <p>{{user?.lastActive}}</p>
+            <p>{{user.lastActive}}</p>
           </div>
           <div>
               <strong>创建于：</strong>
-              <p>{{user?.created}}</p>
+              <p>{{user.created}}</p>
             </div>
        </div>
        <div class="card-footer">
@@ -31,17 +31,17 @@
      </div>
      <div class="col-sm-8">
     <div class="tab-panel">
-      <tabset>
-        <tab heading="关于我 {{user?.knowAs}}">
+      <tabset class="member-tabset">
+        <tab heading="关于{{user?.username}}">
           <h4>自我介绍</h4>
-          <p>{{user?.introduction}}</p>
+          <p>{{user.introduction}}</p>
           <h4>我在寻找</h4>
-          <p>{{user?.lookingFor}}</p>
+          <p>{{user.lookingFor}}</p>
         </tab>
 
         <tab heading="兴趣爱好">
             <h4>爱好</h4>
-            <p>{{user?.interests}}</p>
+            <p>{{user.interests}}</p>
            
           </tab>
 
