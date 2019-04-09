@@ -1,8 +1,11 @@
 <div class="container mt-4">
+  <div class="row">
+    <h4>{{user.username}}的个人信息</h4>
+  </div>
    <div class="row">
      <div class="col-sm-4">
      <div class="card">
-       <img class="card-img-top img-thumbnail" src="{{user?.photoUrl}}" alt="{{user?.knowAs}}">
+       <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user?.knowAs}}">
        <div class="card-body">
          <div>
            <strong>城市：</strong>
@@ -47,7 +50,7 @@
 
           <tab heading="相片">
              
-              <p>我是图片</p>
+              <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
              
             </tab>
         

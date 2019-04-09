@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { ListsComponent } from './lists/lists.component';
 import { MemberDetailComponent } from './Members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
+import { MemberListResolver } from './_resolvers/member-list.resolver';
 
 export const appRoutes: Routes = [
     {path: '', component: HomeComponent}, // 什么也不输入 localhost：port，命中此路由
@@ -15,8 +16,8 @@ export const appRoutes: Routes = [
         runGuardsAndResolvers: 'always',
         canActivate: [AuthGuard],
         children: [
-            { path: 'members', component: MemberListComponent },
-            { path: 'members/:id', component: MemberDetailComponent, resolve: {user: MemberDetailResolver} },
+            { path: 'members', component: MemberListComponent,   resolve: { users : MemberListResolver } },
+            { path: 'members/:id', component: MemberDetailComponent, resolve: { user: MemberDetailResolver } },
             { path: 'messages', component: MessagesComponent },
             { path: 'lists', component: ListsComponent },
         ]

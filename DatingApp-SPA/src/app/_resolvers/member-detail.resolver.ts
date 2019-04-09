@@ -11,7 +11,8 @@ export class MemberDetailResolver implements Resolve<User> {
     constructor(private userService: UserService, private router: Router, private alertify: AlertifyService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<User> {
-        return this.userService.getUser(route.params.id).pipe(
+        // tslint:disable-next-line:max-line-length
+        return this.userService.getUser(route.params.id).pipe( // 使用resolver的时候，不需要subscribe,它自动subscribe.使用pipe是想要捕获其中的错误 resolver:溶剂；分解器[电子]
             catchError(error => {
                this.alertify.error('正在加载数据中') ;
                this.router.navigate(['/members']);
