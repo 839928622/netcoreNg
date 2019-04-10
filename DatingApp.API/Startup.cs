@@ -43,6 +43,7 @@ namespace DatingApp.API
 
             services.AddDbContext<DataContext>(d =>d.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
             services.AddCors(); //允许夸源访问
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings")); //绑定json中的设置到 类中的设置，然后CloudinarySettings类中的属性值将匹配至json中配置的值
             services.AddAutoMapper();
             services.AddTransient<Seed>();
             services.AddScoped<IAuthRepository,AuthRepository>(); // 对于注入服务的这种理解需要加强 目前还不了解
