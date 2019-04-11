@@ -27,6 +27,8 @@ namespace DatingApp.API.Helpers
            ;
            CreateMap<Photo,PhotosForDetailDto>();
            CreateMap<UserForUpdateDto,User>();
+           CreateMap<PhotoForCreationDto,Photo>();//用户上传时的照片
+           CreateMap<Photo,PhotoForReturnDto>();//服务器下传给用户的照片
         }
     }
 }

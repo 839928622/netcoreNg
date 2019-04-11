@@ -10,9 +10,13 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
  model: any = {};
+ photoUrl: string;
+ // tslint:disable-next-line:no-trailing-whitespace
+
   constructor(private authService: AuthService, private alertify: AlertifyService, private router: Router) { } // 注入我们需要的 service
 
   ngOnInit() {
+    this.authService.currentPhotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl); // 订阅currentPhotoUrl 当被订阅放发生改变，则推送至订阅方
   }
 
   login() {
@@ -39,6 +43,9 @@ export class NavComponent implements OnInit {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.authService.decodedToken = null;
+    this.authService.currentUser = null;
     this.alertify.message('您已退出');
   //  console.log('登出');
     this.router.navigate(['']); // 退出后,会命中路由第一个规则，然后路由至home 主页
