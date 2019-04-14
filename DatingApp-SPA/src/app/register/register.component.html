@@ -15,32 +15,122 @@
   </div>
 </form>
 -->
-<form #registerForm="ngForm" (ngSubmit)="register()" class="form-signin">
+<form [formGroup]="registerForm" (ngSubmit)="register()" class="form-signin">
     <div class="text-center mb-4">
-      <img class="mb-4" src="" alt="" width="72" height="72">
+      <!-- <img class="mb-4" src="" alt="" width="72" height="72"> -->
+    
       <h1 class="h3 mb-3 font-weight-normal">
           
       </h1>
       <i class="fas fa-bone"></i>
-      <p>注册开启恋爱之旅</p>
+      <p>注<i class="fa fa-heart-o fa-3x"></i>册</p>
+    </div>
+    <hr>
+  
+    <div class="form-group">
+      <label class="control-label" style="margin-right:10px">性别: </label>
+      <label class="radio-inline">
+        <input class="mr-3" type="radio" value="男" formControlName="gender">男
+      </label>
+      <label class="radio-inline ml-3">
+        <input class="mr-3" type="radio" value="女" formControlName="gender">女
+      </label>
     </div>
   
+
+
     <div class="form-label-group">
-      <input type="email" id="inputEmail" name="Username" [(ngModel)]="model.username" class="form-control" placeholder="你的手机号/邮箱" required="" autofocus="">
-     
+      <input type="text" [ngClass]="{'is-invalid': registerForm.get('username').errors && registerForm.get('username').touched}"
+      id="inputEmail" 
+      formControlName="username"  
+      class="form-control is-invalid" 
+      placeholder="邮箱" 
+       autofocus="">
+      <div class="invalid-feedback" *ngIf="registerForm.get('username').hasError('required') && registerForm.get('username').touched">请填写邮箱</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('username').hasError('email') && registerForm.get('username').touched">您输入的不是邮箱</div>
+   
+    
+     </div>
+
+     <div class="form-group">
+      <input [ngClass]="{'is-invalid': registerForm.get('knownAs').errors && registerForm.get('knownAs').touched}" class="form-control"
+        placeholder="给自己一个昵称" formControlName="knownAs">
+      <div class="invalid-feedback" *ngIf="registerForm.get('knownAs').touched && registerForm.get('knownAs').hasError('required')">必须给自己起一个昵称</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('knownAs').touched && registerForm.get('knownAs').hasError('minlength')">昵称至少3个字符</div>
+      <div class="invalid-feedback" *ngIf="registerForm.get('knownAs').touched && registerForm.get('knownAs').hasError('maxlength')">昵称最大是8个字符</div>
+    </div>
+
+    <div class="form-group">
+      <input [ngClass]="{'is-invalid': registerForm.get('dateOfBirth').errors && registerForm.get('dateOfBirth').touched}" class="form-control"
+        placeholder="生日" formControlName="dateOfBirth" type="text" 
+        bsDatepicker [bsConfig]="bsConfig">
+      <div class="invalid-feedback" *ngIf="registerForm.get('dateOfBirth').touched && registerForm.get('dateOfBirth').hasError('required')">请选择您的生日</div>
+    </div>
+    <div class="form-group">
+      <input [ngClass]="{'is-invalid': registerForm.get('country').errors && registerForm.get('country').touched}" class="form-control"
+        placeholder="国家" formControlName="country">
+      <div class="invalid-feedback" *ngIf="registerForm.get('country').touched && registerForm.get('country').hasError('required')">请选择所在的国家和地区</div>
+    </div>
+
+    <div class="form-group">
+      <input [ngClass]="{'is-invalid': registerForm.get('city').errors && registerForm.get('city').touched}" class="form-control"
+        placeholder="城市" formControlName="city">
+      <div class="invalid-feedback" *ngIf="registerForm.get('city').touched && registerForm.get('city').hasError('required')">请选择所在的城市</div>
     </div>
   
-    <div class="form-label-group">
-      <input type="password" id="inputPassword" class="form-control" placeholder="密码" required="" name="password" [(ngModel)]="model.password">
-     
-    </div>
+   
+
+     <div class="form-label-group">
+       <input type="password" 
+       [ngClass]="{'is-invalid': registerForm.get('password').errors && registerForm.get('password').touched}"
+       id="inputPassword" 
+       class="form-control" 
+       placeholder="密码"  
+       formControlName="password" >
+
+       <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('required') 
+       && 
+       registerForm.get('password').touched">请输入密码</div>
+
+       <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('minlength') 
+       && 
+       registerForm.get('password').touched">密码长度最少是9位</div>
+
+       <div class="invalid-feedback" *ngIf="registerForm.get('password').hasError('maxlength') 
+       && 
+       registerForm.get('password').touched">密码长度最大是25位</div>
+      </div>
+
+
+      <div class="form-label-group">
+        <input type="password" 
+        formControlName="confirmPassword"
+        [ngClass]="{'is-invalid': registerForm.get('confirmPassword').errors 
+        && registerForm.get('confirmPassword').touched
+        || registerForm.get('confirmPassword').touched
+        && registerForm.hasError('mismatch')
+      }"
+        id="confirmPassword" 
+        class="form-control" 
+        placeholder="确认您的密码"  
+        >
+        <div class="invalid-feedback" *ngIf=
+        "registerForm.get('confirmPassword').hasError('required') 
+        && 
+        registerForm.get('confirmPassword').touched">请确认您的密码</div>
+
+        <div class="invalid-feedback" *ngIf="registerForm.hasError('mismatch') 
+        && registerForm.get('confirmPassword').touched">密码和确认密码不匹配</div>
+      </div>
+
+
   <!-- <div class="checkbox mb-3">
       <label>
         <input type="checkbox" value="remember-me"> 记住我
       </label>
     </div> -->
     
-    <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+    <button [disabled]="registerForm.invalid" class="btn btn-lg btn-success btn-block" type="submit">注册</button>
     <button class="btn btn-lg btn-block" type="button" (click)="cancel()">取消</button>
 
     <p class="mt-5 mb-3 text-muted text-center">© 2019-2025</p>
@@ -56,3 +146,5 @@
       </select>
     </div> -->
   </form>
+  <!-- <p>Form value(表单值):{{registerForm.value | json}}</p>
+  <p>Form status（表单状态）:{{registerForm.status | json}}</p> -->

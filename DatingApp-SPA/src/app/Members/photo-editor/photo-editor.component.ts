@@ -62,6 +62,11 @@ export class PhotoEditorComponent implements OnInit {
        };
 
        this.photos.push(photo);
+       if (photo.isMain) { // 检查照片是否是主照片，是的话执行下面的操作：nav和member-detail组件的照片会同时更新
+        this.authService.changeMemberPhoto(photo.url);
+        this.authService.currentUser.photoUrl = photo.url;
+        localStorage.setItem('user', JSON.stringify(this.authService.currentUser));
+       }
      }
    };
   }

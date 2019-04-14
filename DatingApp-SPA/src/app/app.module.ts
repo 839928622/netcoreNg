@@ -11,8 +11,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { NavComponent } from './Nav/Nav.component';
-import { FormsModule } from '@angular/forms';
-import { BsDropdownModule, TabsModule } from 'ngx-bootstrap';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BsDropdownModule, TabsModule, BsDatepickerModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -61,6 +61,7 @@ export function tokenGetter() {
       FormsModule,
       // 引入表单模组如果没有该模组nav上的表单会报错
       BsDropdownModule.forRoot(),
+      BsDatepickerModule.forRoot(),
       JwtModule.forRoot({
          config: {
             tokenGetter: (tokenGetter),
@@ -70,7 +71,8 @@ export function tokenGetter() {
       }),
       TabsModule.forRoot(),
       NgxGalleryModule,
-      FileUploadModule
+      FileUploadModule,
+      ReactiveFormsModule,
    ],
    providers: [
       AuthService,

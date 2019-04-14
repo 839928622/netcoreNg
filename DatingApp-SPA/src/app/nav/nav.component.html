@@ -28,7 +28,7 @@
       </ul>
   
           <div *ngIf="loggedIn()" class="dropdown" dropdown> <!--loggedIn()返回为真，渲染dom-->
-            <span class="mr-1"> <img src="{{photoUrl}}"></span>
+            <span class="mr-1"> <img src="{{photoUrl || '../../../assets/user.png'}}"></span>
             <a class="dropdown-toggle text-light" dropdownToggle>
               欢迎您 {{authService.decodedToken?.unique_name}}
             </a>
