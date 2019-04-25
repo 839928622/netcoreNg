@@ -3,6 +3,7 @@ import { UserService } from '../../../../_services/User.service';
 import { Component, OnInit } from '@angular/core';
 import { User } from '../../_models/User';
 import { ActivatedRoute } from '@angular/router';
+import { Pagination, PaginatedResult } from 'src/app/_models/Pagination';
 
 @Component({
   selector: 'app-member-list',
@@ -11,23 +12,31 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class MemberListComponent implements OnInit {
   users: User[];
+  pagination: Pagination;
 
   constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     // this.loadUsers(); // 组件初始化时加载用户信息
     this.route.data.subscribe(data => {
-      this.users = data.users; // data.users 应该是路由上定义的，或者尽量与之同名方便理解
+      this.users = data.users.result; // data.users 应该是路由上定义的，或者尽量与之同名方便理解
+      this.pagination = data.users.pagination; // 获取分页的用户
     });
   }
 
-  // loadUsers() {
-  //  this.userService.getUsers().subscribe((users: User[]) => { // 把从API获取到的对象转换为User数组
-  //    this.users = users;
-  //  }, error => {
-  //   this.alertify.error('获取用户列表失败' + error);
-  //  }
-  //  );
-  // }
+  loadUsers() {
+   this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+   .subscribe((res: PaginatedResult<User[]>) => { // 把从API获取到的对象转换为User数组
+     this.users = res.result;
+     this.pagination = res.pagination;
+   }, error => {
+    this.alertify.error('获取用户列表失败' + error);
+   }
+   );
+  }
 
+  pageChanged(event: any ): void {
+  this.pagination.currentPage = event.page;
+  this.loadUsers();
+  }
 }

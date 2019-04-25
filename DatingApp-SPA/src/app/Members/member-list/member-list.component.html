@@ -6,3 +6,17 @@
     </div> <!--col-lg-2 表示符合该大屏幕的话显示6列  中屏幕显示4列 小屏幕显示2列-->
   </div>
 </div>
+<div class="d-flex justify-content-center"> 
+  <pagination [boundaryLinks]="true" 
+              [totalItems]="pagination.totalItems"
+              [itemsPerPage] = "pagination.itemsPerPage"
+              [(ngModel)]="pagination.currentPage"
+              (pageChanged)="pageChanged($event)"
+              previousText="&lsaquo;" 
+              nextText="&rsaquo;" 
+              firstText="&laquo;" 
+              lastText="&raquo;">
+</pagination>
+            <!-- boundaryLinks表示当没有第一页或者最后一页的时候，第一页数和最后一页为不可以点击 -->
+
+</div>
