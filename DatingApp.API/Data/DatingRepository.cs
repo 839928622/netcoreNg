@@ -4,6 +4,7 @@ using DatingApp.API.Models;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using DatingApp.API.Helpers;
+using System;
 
 namespace DatingApp.API.Data
 {
@@ -46,8 +47,22 @@ namespace DatingApp.API.Data
 
         public async Task<PageList<User>> GetUsers(UserParams userParams)
         {
-            var users =  _context.Users.Include(u => u.Photos) ;
+            var users =  _context.Users.Include(u => u.Photos).AsQueryable() ;
 
+            users = users.Where(u => u.Id != userParams.UserId);
+           // 第一次筛选：剔除 当前用户自己，即不显示当前用户自己的信息
+            users = users.Where(u => u.Gender == userParams.Gender);
+           // 第二次筛选：选择传进来的性别参数
+
+           if (userParams.MinAge != 18 || userParams.MaxAge != 99) 
+           {
+               var minDateOfBirth = DateTime.Today.AddYears(-userParams.MaxAge - 1) ;
+               var maxDateOfBirth = DateTime.Today.AddYears(-userParams.MinAge) ;
+            // 第三次帅选：选出符合用户期望的年龄段
+               users = users
+                       .Where (u => u.DateOfBirth >= minDateOfBirth
+                              && u.DateOfBirth <= maxDateOfBirth);
+           }
             return await PageList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
 

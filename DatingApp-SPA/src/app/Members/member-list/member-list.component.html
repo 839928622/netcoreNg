@@ -1,4 +1,39 @@
-<div class="container mt-5">
+<div class="text-center mt-3"> 
+<h2>为您找到匹配的{{pagination.totalItems}}条记录</h2>  
+</div>
+<div class="container mt-3">
+  <form  class="form-inline" #form="ngForm" (ngSubmit)="loadUsers()" novalidate>
+   
+    <div class="form-group">  
+      <label for="minAge">年龄从</label>
+      <input type="number" class="form-control ml-1"
+       style="width: 70px" id="minAge" name="minAge"
+       [(ngModel)]="userParams.minAge">
+    </div>
+  
+    <div class="form-group px-2">  
+        <label for="maxAge">到</label>
+        <input type="number" class="form-control ml-1"
+         style="width: 70px" id="maxAge" name="maxAge"
+         [(ngModel)]="userParams.maxAge">
+      </div>
+
+      <div class="form-group px-2">  
+          <label for="gender">显示：</label>
+        <select class="form-control ml-1" style="width: 130px" 
+        id="gender" name="gender"
+        [(ngModel)]="userParams.gender">
+       <option *ngFor="let gender of genderList" [value]="gender.value">
+         {{gender.display}}
+       </option>
+      </select>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="margin-left:10px">筛选</button>
+        <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters">重置筛选条件</button>
+      </form>
+      <br>
+
   <div class="row">
     <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6">
 

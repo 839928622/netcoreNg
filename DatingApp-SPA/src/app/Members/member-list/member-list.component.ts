@@ -13,6 +13,9 @@ import { Pagination, PaginatedResult } from 'src/app/_models/Pagination';
 export class MemberListComponent implements OnInit {
   users: User[];
   pagination: Pagination;
+  user: User = JSON.parse(localStorage.getItem('user'));
+  genderList = [{value: 'male', display: '男士'}, {value: 'female', display: '女士'}];
+  userParams: any = {}; // 定义一个any对象，
 
   constructor(private userService: UserService, private alertify: AlertifyService, private route: ActivatedRoute) { }
 
@@ -22,10 +25,21 @@ export class MemberListComponent implements OnInit {
       this.users = data.users.result; // data.users 应该是路由上定义的，或者尽量与之同名方便理解
       this.pagination = data.users.pagination; // 获取分页的用户
     });
+
+    this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female' ;
+    this.userParams.minAge = 18 ;
+    this.userParams.maxAge = 99 ; // 初始筛选条件
+  }
+
+  resetFilters() {
+    this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female' ;
+    this.userParams.minAge = 18 ;
+    this.userParams.maxAge = 99 ; // 重置 初始筛选条件
+    this.loadUsers();
   }
 
   loadUsers() {
-   this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage)
+   this.userService.getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, this.userParams)
    .subscribe((res: PaginatedResult<User[]>) => { // 把从API获取到的对象转换为User数组
      this.users = res.result;
      this.pagination = res.pagination;
