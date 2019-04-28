@@ -12,7 +12,7 @@ import { AppComponent } from './app.component';
 
 import { NavComponent } from './Nav/Nav.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -39,7 +39,7 @@ export function tokenGetter() {
 }
 
 @NgModule({
-   declarations: [
+   declarations: [ // 这里是放置组件component和pipe的地方
       AppComponent,
       // 使用自动生成组件的方式，会自动把组件加载进来,
       NavComponent,
@@ -69,10 +69,11 @@ export function tokenGetter() {
          config: {
             tokenGetter: (tokenGetter),
             whitelistedDomains: ['localhost:5000'],
-            blacklistedRoutes: ['localhost:5000/api/auti']
+            blacklistedRoutes: ['localhost:5000/api/auth']
          }
       }),
       TabsModule.forRoot(),
+      ButtonsModule.forRoot(),
       NgxGalleryModule,
       FileUploadModule,
       ReactiveFormsModule,

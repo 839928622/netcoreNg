@@ -47,7 +47,10 @@ namespace DatingApp.API.Data
 
         public async Task<PageList<User>> GetUsers(UserParams userParams)
         {
-            var users =  _context.Users.Include(u => u.Photos).AsQueryable() ;
+            var users =  _context.Users
+            .Include(u => u.Photos)
+            .OrderByDescending(x => x.LastActive)
+            .AsQueryable() ; // 排序，按照上次活动的时间排序
 
             users = users.Where(u => u.Id != userParams.UserId);
            // 第一次筛选：剔除 当前用户自己，即不显示当前用户自己的信息
@@ -62,6 +65,20 @@ namespace DatingApp.API.Data
                users = users
                        .Where (u => u.DateOfBirth >= minDateOfBirth
                               && u.DateOfBirth <= maxDateOfBirth);
+           }
+
+           if (!string.IsNullOrEmpty(userParams.OrderBy))
+           {
+               switch (userParams.OrderBy)
+               {
+                   case "created":
+                    users = users.OrderByDescending(u => u.Created);
+                    break;
+                    //如果用户传来的参数是按创建账号时排序，则命中第一个条件，默认是按照上次活动的时间排序
+                    default:
+                    users = users.OrderByDescending(u => u.LastActive);
+                    break;
+               }
            }
             return await PageList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }

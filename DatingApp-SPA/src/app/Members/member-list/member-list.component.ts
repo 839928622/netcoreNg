@@ -29,6 +29,7 @@ export class MemberListComponent implements OnInit {
     this.userParams.gender = this.user.gender === 'female' ? 'male' : 'female' ;
     this.userParams.minAge = 18 ;
     this.userParams.maxAge = 99 ; // 初始筛选条件
+    this.userParams.orderBy = 'lastActive' ;
   }
 
   resetFilters() {
