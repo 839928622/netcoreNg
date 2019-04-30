@@ -78,7 +78,7 @@ namespace DatingApp.API.Controllers
 
             var like = await _repo.GetLike(id,recipientId);
             if (like != null)
-            return BadRequest("您已经点过赞了");
+            return BadRequest("您已经关注过该用户了");
 
             if(await _repo.GetUser(recipientId) == null)
              return NotFound();

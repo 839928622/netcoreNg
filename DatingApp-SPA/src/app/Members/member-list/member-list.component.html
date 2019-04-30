@@ -30,7 +30,7 @@
         </div>
         
         <button type="submit" class="btn btn-primary" style="margin-left:10px">筛选</button>
-        <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters">重置筛选条件</button>
+        <button type="button" class="btn btn-info" style="margin-left:10px" (click)="resetFilters()">重置筛选条件</button>
      <div class="col">  
        <div class="btn-group float-right">
          <button btnRadio="lastActive" (click)="loadUsers()" [(ngModel)]="userParams.orderBy" type="button" name="orderBy" class="btn btn-primary">上次活动的时间</button>
