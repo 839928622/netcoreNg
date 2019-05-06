@@ -65,14 +65,14 @@ namespace DatingApp.API.Data
             users = users.Where(u => u.Gender == userParams.Gender);
            // 第二次筛选：选择传进来的性别参数
 
-        if (userParams.Likers) // 钟意的人
+        if (userParams.Likers) // 我钟意的人
         {
         var userLikers = await GetUserLikes(userParams
         .UserId,userParams.Likers);
-        users = users.Where(u => userLikers.Contains(u.Id));
+        users = users.Where(u => userLikers.Contains(u.Id)); // 到数据库检索该关注的人
 
         }
-        if (userParams.Likees) // 
+        if (userParams.Likees) // 钟意我的人
         {
              var userLikees = await GetUserLikes(userParams
         .UserId,userParams.Likers);
@@ -108,10 +108,11 @@ namespace DatingApp.API.Data
         {
             var user = await _context.Users
             .Include(x=>x.Likers)
-            .Include(x=> x.Likees)
-            .FirstOrDefaultAsync(u => u.Id == id); //获取用户钟意/点赞的人 和 自己被点赞/钟意的人
+            .Include(x=> x.Likees) 
+            .FirstOrDefaultAsync(u => u.Id == id); //获取用户关注的人 和 自己被关注的人
           if (likers)
           {
+              // 喜欢的人= true，则检索传进来的id中
               return user.Likers.Where(u => u.LikeeId == id).Select(i => i.LikerId);
           }
           else
@@ -125,6 +126,51 @@ namespace DatingApp.API.Data
             return await _context.SaveChangesAsync() > 0 ;
         }
 
-        
+        public async Task<Message> GetMessage(int id)
+        {
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id); //通过id查找该条消息
+        }
+
+        public async Task<PageList<Message>> GetMessagesForUser(MessageParams messageParams)
+        {
+            var messages = _context
+            .Messages
+            .Include(u => u.Sender).ThenInclude(p => p.Photos) // 第一次见到这种用法 显示在message实体中关联/带出 发送消息的人，然后再带出发送消息的人的头像/照片
+            .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            .AsQueryable();
+
+            // 接下来筛选数据
+            switch (messageParams.MessageContainer)
+            {
+                case "Inbox" : // 收件箱 RecipientId = 收件人id
+                messages = messages.Where( u => u.RecipientId == messageParams.UserId);
+                break;
+                case "Outbox": // 发件箱
+                messages = messages.Where(u => u.SenderId == messageParams.UserId);
+                break;
+                default: // 默认 未读
+                 messages = messages.Where( u=> u.RecipientId == messageParams.UserId && u.IsRead == false);
+                 break;
+            }
+
+            messages = messages.OrderByDescending(d => d.MessageSent); // 按照发送时间降序排序
+            return await PageList<Message>.CreateAsync(messages,messageParams.PageNumber, messageParams.PageSize); // 返回分页的消息
+        }
+
+        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        {
+          
+            var messages = await _context
+            .Messages
+            .Include(u => u.Sender).ThenInclude(p => p.Photos) // 第一次见到这种用法 显示在message实体中关联/带出 发送消息的人，然后再带出发送消息的人的头像/照片
+            .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+            .Where( m => m.RecipientId == userId && m.SenderId == recipientId 
+                       || m.RecipientId == recipientId && m.SenderId == userId)
+                       .OrderByDescending(m => m.MessageSent)
+                       .ToListAsync(); // 返回两个用户之间的对话  这里的逻辑有点绕
+
+                       return messages;
+
+        }
     }
 }

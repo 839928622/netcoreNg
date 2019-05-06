@@ -89,7 +89,7 @@ namespace DatingApp.API.Controllers
           if (!userFromRepo.Photos.Any(u => u.IsMain))
               photo.IsMain = true;
 
-             userFromRepo.Photos.Add(photo); 
+             userFromRepo.Photos.Add(photo); //从数据库里查询出来的user，可以点出Photos。最后添加照片进去。
 
 
           if (await _repo.SaveAll())   

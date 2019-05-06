@@ -67,11 +67,11 @@ namespace DatingApp.API.Controllers
           if (await _repo.SaveAll())
                 return NoContent();
 
-                throw new Exception($"id为{id}的用户资料更新失败");
+                throw new Exception($"id为{id}的用户资料更新失败"); // $符号表示String.Format
         }
 
         [HttpPost("{id}/like/{recipientId}")]
-        public async Task<IActionResult> LikeUser(int id ,int recipientId)
+        public async Task<IActionResult> LikeUser(int id ,int recipientId) // 第二个参数：recipientId是列表中展示的用户的id，第一个参数：id是当前账户所有者的id
         {
             if ( id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
@@ -82,10 +82,10 @@ namespace DatingApp.API.Controllers
 
             if(await _repo.GetUser(recipientId) == null)
              return NotFound();
-             like = new Like
+             like = new Like // 如果当前账户的所有者没有关注id=recipientId的用户，那么就新增一条记录
              {
-               LikerId = id ,
-               LikeeId = recipientId
+               LikerId = id , // 关注者的id
+               LikeeId = recipientId // 被关注者的id
              };
              _repo.Add<Like>(like);
 

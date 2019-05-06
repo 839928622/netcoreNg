@@ -72,7 +72,7 @@ deletePhoto(userId: number, id: number) {
   return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
 }
 
-sendLike(id: number, recipientId: number) {
+sendLike(id: number, recipientId: number) { // 第二个参数：id是列表中展示的用户的id，第一个参数是当前账户所有者的id
  return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
 }
 

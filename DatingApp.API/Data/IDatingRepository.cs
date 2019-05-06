@@ -16,5 +16,10 @@ namespace DatingApp.API.Data
          Task<Photo> GetPhoto(int id);
          Task<Photo> GetMainPhotoForUser(int userId);
          Task<Like> GetLike (int userId ,int recipientId); //这两个都是用户的Id
-    }
+         Task<Message> GetMessage(int id);//id是消息id
+         Task<PageList<Message>> GetMessagesForUser(MessageParams messageParams); // 这里将是 收件箱 发件箱 未读消息 依赖的方法
+         Task<IEnumerable<Message>> GetMessageThread(int userId ,int recipientId); //这里是消息发送者id和接收者recipientId之间的通信
+
+
+}
 }
