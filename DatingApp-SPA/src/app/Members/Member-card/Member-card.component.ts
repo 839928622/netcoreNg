@@ -21,7 +21,7 @@ export class MemberCardComponent implements OnInit {
   sendLike(id: number) {
     this.userService.sendLike(this.authService.decodedToken.nameid, id)
     .subscribe(data => { // 第二个参数：id是列表中展示的用户的id，第一个参数是当前账户所有者的id
-      this.alertify.success('你关注' + this.user.knowAs + '成功');
+      this.alertify.success('你关注' + this.user.knownAs + '成功');
     }, error => {
     this.alertify.error('关注失败，' + error);
     });
