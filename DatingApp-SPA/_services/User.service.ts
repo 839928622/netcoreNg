@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { User } from 'src/app/_models/User';
 import { PaginatedResult } from 'src/app/_models/Pagination';
 import { map } from 'rxjs/operators';
+import { Message } from 'src/app/_models/Message';
+
 
 // const httpOptions = {
 //   headers: new HttpHeaders({
@@ -76,4 +78,29 @@ sendLike(id: number, recipientId: number) { // 第二个参数：id是列表中�
  return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
 }
 
+// 获取通信消息的方法
+
+getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
+const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
+
+let params = new HttpParams();
+
+params = params.append('MessageContainer', messageContainer);
+
+if (page != null && itemsPerPage != null) {
+  params = params.append('pageNumber', page);
+  params = params.append('pageSize', itemsPerPage);
+}
+
+return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {observe: 'response', params})
+ .pipe(
+   map(response => {
+     paginatedResult.result = response.body;
+     if (response.headers.get('Pagination') !== null) {
+      paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+    }
+     return paginatedResult ;
+   })
+ );
+}
 }
