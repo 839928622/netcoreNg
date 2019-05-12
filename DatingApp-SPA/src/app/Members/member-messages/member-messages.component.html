@@ -1,0 +1,59 @@
+<div class="card">
+  <div class="card-body">
+    <div *ngIf="messages.length === 0"> 
+      <p>目前没有任何消息...您可以点击下面向对方打招呼</p>
+    </div>
+    <ul class=chat>
+      <li *ngFor="let message of messages">
+        <!--发送给别人的消息-->
+        <div *ngIf="message.senderId == recipientId">
+          <span class="chat-img float-left">
+            <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <strong class="primary-font">{{message.senderKnownAs}}</strong>
+              <small class="text-muted float-right">
+                <span class="fa fa-clock-o">{{message.messageSent | timeAgo}}</span>
+              </small>
+              <div>
+                <p>{{message.content}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--发送给我的消息-->
+        <div *ngIf="message.senderId != recipientId">
+          <span class="chat-img float-left">
+            <img src="{{message.senderPhotoUrl}}" alt="{{message.senderKnownAs}}" class="rounded-circle">
+          </span>
+          <div class="chat-body">
+            <div class="header">
+              <small class="text-muted ">
+                <span class="fa fa-clock-o">{{message.messageSent | timeAgo}}</span>
+                <span *ngIf="!message.isRead" class="text-danger">(未读)</span>
+                <span  *ngIf="message.isRead" class="text-success">(已读{{message.dateRead | timeAgo}})</span>
+             </small>
+              <strong class="primary-font float-right">{{message.senderKnownAs}}</strong>
+              <div>
+                <p>{{message.content}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+
+  </div>
+  <div class="card-footer">
+    <form action="">
+      <div class="input-group">
+        <input type="text" class="form-control input-sm" placeholder="发送私信">
+        <div class="input-group-append">
+          <button class="btn btn-primary">发送</button>
+        </div>    
+      </div>
+    </form>
+  </div>
+</div>

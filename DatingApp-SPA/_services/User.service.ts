@@ -103,4 +103,8 @@ return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {obs
    })
  );
 }
+
+getMessageThread(id: number, recipientId: number) {
+ return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId);
+}
 }
