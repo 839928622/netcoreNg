@@ -25,6 +25,11 @@ export class MemberDetailComponent implements OnInit {
       this.user = data.user ; // 在组件被激活前先加载数据 个人理解是路由获取到了数据，最终组件再去路由取
     });
 
+    this.route.queryParams.subscribe(params => {
+    const selectedTab = params.tab; // 原文使用params['tab'] ,ng7不适用，params就是query上的参数，点出来即可
+    this.memberTabs.tabs[selectedTab > 0 ? selectedTab : 0].active = true;
+  });
+
     this.galleryOptions = [
       { // 下面的配置是设置gallery的样式
         width: '500px',
