@@ -27,14 +27,14 @@
        <div class="card-footer">
          <div class="btn-group d-flex">
            <button class="btn btn-primary w-100">点赞</button>
-           <button class="btn btn-success w-100">发消息</button>
+           <button class="btn btn-success w-100" (click)="selectTab(3)">发消息</button>
          </div>
        </div>
      </div>
      </div>
      <div class="col-sm-8">
     <div class="tab-panel">
-      <tabset class="member-tabset">
+      <tabset class="member-tabset" #memberTabs> <!--给定一个标识 #memberTabs-->
         <tab heading="关于{{user?.username}}">
           <h4>自我介绍</h4>
           <p>{{user.introduction}}</p>
