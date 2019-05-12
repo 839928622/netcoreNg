@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <div *ngIf="messages.length === 0"> 
+    <div *ngIf="messages?.length === 0">
       <p>目前没有任何消息...您可以点击下面向对方打招呼</p>
     </div>
     <ul class=chat>
@@ -47,11 +47,11 @@
 
   </div>
   <div class="card-footer">
-    <form action="">
+    <form #messageForm="ngForm" (ngSubmit)="messageForm.valid && sendMessage()">
       <div class="input-group">
-        <input type="text" class="form-control input-sm" placeholder="发送私信">
+        <input type="text" [(ngModel)]="newMessage.content" name="content" required class="form-control input-sm" placeholder="发送私信">
         <div class="input-group-append">
-          <button class="btn btn-primary">发送</button>
+          <button class="btn btn-primary" [disabled]="!messageForm.valid">发送</button>
         </div>    
       </div>
     </form>

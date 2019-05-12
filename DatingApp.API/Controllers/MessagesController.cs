@@ -69,6 +69,7 @@ namespace DatingApp.API.Controllers
         [HttpGet("thread/{recipientId}")]
         public async Task<IActionResult> GetMessageThread(int userId, int recipientId)
         {
+            
              if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             return Unauthorized();
 
@@ -82,7 +83,9 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
        {
-           if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+           var sender = await _repo.GetUser(userId);
+
+           if(sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             return Unauthorized();
 
             messageForCreationDto.SenderId = userId ;
@@ -94,12 +97,15 @@ namespace DatingApp.API.Controllers
            var message = _mapper.Map<Message>(messageForCreationDto); // 把消息dto映射到消息实体
            _repo.Add(message); // 这里没有指定实体，由efcore去判断，该消息写入哪一个实体
            
-            var messageToReturn = _mapper.Map<MessageForCreationDto>(message); // 把返回的数据重新封装，不然会返回用户的所有信息
            if (await _repo.SaveAll())
-           
+           {
+              var messageToReturn = _mapper.Map<MessageToReturnDto>(message); // 把返回的数据重新封装，不然会返回用户的所有信息
+              // 这样就可以获得准确的消息id
                return CreatedAtRoute("GetMessage", new {
                    id = message.Id
                },messageToReturn);
+           }
+           
 
                throw new Exception("您创建的消息没有被系统保存"); // Exception 必须using system
            
