@@ -45,4 +45,17 @@ export class MessagesComponent implements OnInit {
     this.pagination.currentPage = event.page;
     this.loadMessages();
   }
+
+ deleteMessage(id: number) {
+   this.alertify.confirm('确定要删除该消息吗?', () => {
+   this.userService.deleteMessage(id, this.authService.decodedToken.nameid).subscribe(
+     () => {
+       this.messages.splice(this.messages.findIndex(m => m.id === id), 1);
+       this.alertify.success('消息已删除');
+     }, error => {
+       this.alertify.error('消息删除失败');
+     }
+   );
+   });
+ }
 }

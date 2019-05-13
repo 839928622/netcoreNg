@@ -143,13 +143,13 @@ namespace DatingApp.API.Data
             switch (messageParams.MessageContainer)
             {
                 case "Inbox" : // 收件箱 RecipientId = 收件人id
-                messages = messages.Where( u => u.RecipientId == messageParams.UserId);
+                messages = messages.Where( u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false);
                 break;
                 case "Outbox": // 发件箱
-                messages = messages.Where(u => u.SenderId == messageParams.UserId);
+                messages = messages.Where(u => u.SenderId == messageParams.UserId && u.SenderDeleted == false );
                 break;
                 default: // 默认 未读
-                 messages = messages.Where( u=> u.RecipientId == messageParams.UserId && u.IsRead == false);
+                 messages = messages.Where( u=> u.RecipientId == messageParams.UserId && u.IsRead == false && u.RecipientDeleted == false);
                  break;
             }
 
@@ -164,8 +164,12 @@ namespace DatingApp.API.Data
             .Messages
             .Include(u => u.Sender).ThenInclude(p => p.Photos) // 第一次见到这种用法 显示在message实体中关联/带出 发送消息的人，然后再带出发送消息的人的头像/照片
             .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-            .Where( m => m.RecipientId == userId && m.SenderId == recipientId 
-                       || m.RecipientId == recipientId && m.SenderId == userId)
+            .Where( m => m.RecipientId == userId 
+                       && m.RecipientDeleted == false 
+                       && m.SenderId == recipientId 
+                       || m.RecipientId == recipientId 
+                       && m.SenderDeleted == false
+                       && m.SenderId == userId)
                        .OrderByDescending(m => m.MessageSent)
                        .ToListAsync(); // 返回两个用户之间的对话  这里的逻辑有点绕
 

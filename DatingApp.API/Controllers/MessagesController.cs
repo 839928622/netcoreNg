@@ -109,6 +109,29 @@ namespace DatingApp.API.Controllers
 
                throw new Exception("您创建的消息没有被系统保存"); // Exception 必须using system
            
-       } 
+       }
+
+      [HttpPost("{id}")]  
+      public async Task<IActionResult> DeleteMessage(int id ,int userId)
+      {
+          if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            return Unauthorized();
+
+            var messageFromRepo  = await _repo.GetMessage(id);
+
+            if (messageFromRepo.SenderId == userId)
+             messageFromRepo.SenderDeleted = true ;
+
+             if(messageFromRepo.RecipientId == userId)
+             messageFromRepo.RecipientDeleted = true;
+
+             if(messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted)
+              _repo.Delete(messageFromRepo);
+
+              if (await _repo.SaveAll())
+               return NoContent(); // 对于删除消息操作 无需返回数据
+
+              throw new Exception("删除消息出错"); 
+      }
     }
 }
