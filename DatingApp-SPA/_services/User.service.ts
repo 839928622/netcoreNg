@@ -115,4 +115,8 @@ sendMessage(id: number, message: Message) {
 deleteMessage(id: number, userId: number) {
   return this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + id , {}); // 由于是post 因此发送一个空的对象
 }
+
+MarkAsRead(userId: number, messageId: number) { // 这个方法用于member-message component
+  this.http.post(this.baseUrl + 'users/' + userId + '/messages/' + messageId + '/read', {}).subscribe(); // 这里使用subscribe是因为服务器端并不返回任何东西
+}
 }

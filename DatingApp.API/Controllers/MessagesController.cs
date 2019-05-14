@@ -133,5 +133,23 @@ namespace DatingApp.API.Controllers
 
               throw new Exception("删除消息出错"); 
       }
+
+      [HttpPost("{id}/read")]
+      public async Task<IActionResult> MarkMessageAsRead(int userId, int messageId)
+      {
+          if(userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            return Unauthorized();
+
+            var message = await _repo.GetMessage(messageId);
+
+            if (message.recipientId != userId)
+              return Unauthorized(); // 如果消息的接受者id 不等于当前登录用户的id
+
+              message.IsRead = true ;
+              message.DateRead = DateTime.Now;
+
+              await _repo.SaveAll();
+              return NoContent();
+      }
     }
 }
