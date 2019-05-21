@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.API.Helpers;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DatingApp.API
 {
@@ -34,6 +35,45 @@ namespace DatingApp.API
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddJsonOptions(options => {
+              options.SerializerSettings.ReferenceLoopHandling = 
+                      Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            });
+
+            services.AddDbContext<DataContext>(d =>d.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.IncludeIgnoredWarning))
+            );//这里可以使用上面注入的IConfiguration Configration ，Configuration对应的是appsettings.json这个json文件，里面可以获取到我们写入的配置信息。
+            services.AddCors(); //允许夸源访问
+            services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings")); //绑定json中的设置到 类中的设置，然后CloudinarySettings类中的属性值将匹配至json中配置的值
+            services.AddAutoMapper();
+            services.AddTransient<Seed>();
+            services.AddScoped<IAuthRepository,AuthRepository>(); // 对于注入服务的这种理解需要加强 目前还不了解
+            services.AddScoped<IDatingRepository,DatingRepository>();
+            
+            // 这里是告诉 mvc 我们使用何种Authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options=>{
+             options.TokenValidationParameters = new TokenValidationParameters
+             {
+                ValidateIssuerSigningKey = true,
+                 IssuerSigningKey = new SymmetricSecurityKey(
+                     Encoding
+                     .ASCII
+                     .GetBytes(Configuration.GetSection("AppSettings:Token").Value)), // 由于我们的key是字符串，因此要转换为byte[] 
+                    ValidateIssuer = false, // 由于是本地项目 设置为false
+                    ValidateAudience = false // localhost 
+
+             };
+
+            });
+
+            services.AddScoped<LogUserActivity>();
+        }
+
+
+         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             .AddJsonOptions(options => {
@@ -69,6 +109,7 @@ namespace DatingApp.API
             services.AddScoped<LogUserActivity>();
         }
 
+
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
@@ -103,7 +144,14 @@ namespace DatingApp.API
             // seeder.SeedUsers(); 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseAuthentication();// 上面配置好 authentication 这里要use ,效果是控制器上任何有authorize的，都会受到保护
-            app.UseMvc();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+            app.UseMvc(routes => {
+                routes.MapSpaFallbackRoute(
+                    name: "spa-fallback",
+                    defaults: new { controller = "Fallback" , action = "Index"}
+                );
+            });
         }
     }
 }

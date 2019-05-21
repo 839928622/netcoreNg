@@ -142,7 +142,7 @@ namespace DatingApp.API.Controllers
 
             var message = await _repo.GetMessage(messageId);
 
-            if (message.recipientId != userId)
+            if (message.RecipientId != userId)
               return Unauthorized(); // 如果消息的接受者id 不等于当前登录用户的id
 
               message.IsRead = true ;

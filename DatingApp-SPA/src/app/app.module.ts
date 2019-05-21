@@ -1,3 +1,4 @@
+import { NavComponent } from './nav/nav.component';
 import { UserService } from './../../_services/User.service';
 import { AuthGuard } from './_guards/auth.guard';
 import { appRoutes } from './routes';
@@ -10,7 +11,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { NavComponent } from './Nav/Nav.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
@@ -42,9 +43,8 @@ export function tokenGetter() {
 }
 
 @NgModule({
-   declarations: [ // 这里是放置组件component和pipe的地方
+   declarations: [ // 这里是放置组件component和pipe的地方   使用自动生成组件的方式，会自动把组件加载进来
       AppComponent,
-      // 使用自动生成组件的方式，会自动把组件加载进来,
       NavComponent,
       HomeComponent,
       RegisterComponent,
