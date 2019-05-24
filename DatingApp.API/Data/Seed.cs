@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using DatingApp.API.Models;
 using Newtonsoft.Json;
 
@@ -15,6 +16,9 @@ namespace DatingApp.API.Data
 
         public void SeedUsers() 
         {
+            if (!_context.Users.Any())
+            {
+
          var userData = System.IO.File.ReadAllText("Data/UserSeedData.json"); //读取数据出来后反序列化成对象object
         var Users = JsonConvert.DeserializeObject<List<User>>(userData);
         // 接下来循环遍历
@@ -31,6 +35,7 @@ namespace DatingApp.API.Data
         
         _context.SaveChanges(); // 这里不用async的原因是该操作只执行一次
         // 下一步，去到startup告知应用关于新增十个用户这件事 
+            }
         }
 
          private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
