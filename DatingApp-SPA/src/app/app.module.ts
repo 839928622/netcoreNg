@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule } from 'ngx-bootstrap';
+import { BsDropdownModule, TabsModule, BsDatepickerModule, PaginationModule, ButtonsModule, ModalModule } from 'ngx-bootstrap';
 import { from } from 'rxjs';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
@@ -37,6 +37,12 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './Members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/hasRole.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { AdminService } from '_services/admin.service';
+import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
@@ -56,7 +62,12 @@ export function tokenGetter() {
       MemberEditComponent,
       PhotoEditorComponent,
       TimeAgoPipe,
-      MemberMessagesComponent
+      MemberMessagesComponent,
+      AdminPanelComponent,
+      HasRoleDirective,
+      UserManagementComponent,
+      PhotoManagementComponent,
+      RolesModalComponent
 
    ],
    imports: [
@@ -81,6 +92,7 @@ export function tokenGetter() {
       NgxGalleryModule,
       FileUploadModule,
       ReactiveFormsModule,
+      ModalModule.forRoot(),
    ],
    providers: [ // 各种服务需在此注册
       AuthService,
@@ -93,7 +105,11 @@ export function tokenGetter() {
       MemberEditResolver,
       PreventUnsavedChanges,
       ListsResolver,
-      MessagesResolver
+      MessagesResolver,
+      AdminService
+   ],
+   entryComponents: [
+   RolesModalComponent
    ],
    bootstrap: [
       AppComponent

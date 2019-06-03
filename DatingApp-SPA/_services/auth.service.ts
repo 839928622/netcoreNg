@@ -14,8 +14,8 @@ export class AuthService {
 
   baseUrl = environment.apiUrl + 'auth/'; // import { JwtHelperService } from '@auth0/angular-jwt';
   jwtHelper = new JwtHelperService();
-  decodedToken: any; // 用于解码token中的用户信息
-  currentUser: User; // 用户存储登录人的身份信息
+  decodedToken: any; // 用于存储解码的token中的用户信息
+  currentUser: User; // 用于存储登录人的身份信息
   photoUrl = new BehaviorSubject<string>('/DatingApp-SPA/src/assets/user.png');
   currentPhotoUrl = this.photoUrl.asObservable();
 
@@ -53,5 +53,18 @@ register(model: User) {
 loggedIn() {
 const token = localStorage.getItem('token');
 return !this.jwtHelper.isTokenExpired(token); // 检查token是否过期，返回布尔类型
+}
+
+roleMatch(allowedRoles): boolean {
+let isMatch = false;
+const userRoles = this.decodedToken.role as Array<string>;
+allowedRoles.forEach(element => {
+  if (userRoles.includes(element)) {
+    isMatch = true ;
+    return;
+  }
+
+});
+return isMatch ;
 }
 }

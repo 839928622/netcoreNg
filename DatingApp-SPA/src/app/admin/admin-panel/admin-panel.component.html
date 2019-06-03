@@ -1,0 +1,19 @@
+<div class="container mt5">
+  <h2>管理员控制面板</h2>
+  <div class="tab-panel">
+    <tabset class="member-tabset">
+      <tab heading="用户管理" *appHasRole="['Admin']">
+        <div class="container">
+
+          <app-user-management></app-user-management>
+        </div>
+      </tab>
+      <tab heading="照片管理" *appHasRole="['Admin','Moderator']">
+        <div class="container">
+
+          <app-photo-management></app-photo-management>
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

@@ -17,12 +17,12 @@ namespace DatingApp.API.Data
         {
             var user= await _context.Users
                         .Include(p => p.Photos)
-                        .FirstOrDefaultAsync(u=>u.Username==username);
+                        .FirstOrDefaultAsync(u=>u.UserName==username);
             if(user==null)
             return null;
 
-            if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)) // 该用户存在，从数据库提取hash和salt
-            return null;
+            // if(!VerifyPasswordHash(password,user.PasswordHash,user.PasswordSalt)) // 该用户存在，从数据库提取hash和salt
+            // return null;
 
             return user;
         }
@@ -51,8 +51,8 @@ namespace DatingApp.API.Data
             CreatePasswordHash(password,out passwordHash,out passwordSalt);// 带out 参数的，表示传进方法里的参数，会传出（绑定）到原始参数
        
        // 也就是说上面声明的byte[] 变量，经过上方的方法之后，参数发生了改变
-       user.PasswordHash=passwordHash;
-       user.PasswordSalt=passwordSalt;
+    //    user.PasswordHash=passwordHash;
+    //    user.PasswordSalt=passwordSalt;
 
       await  _context.Users.AddAsync(user);
       await _context.SaveChangesAsync();
@@ -73,7 +73,7 @@ namespace DatingApp.API.Data
 
         public async Task<bool> UserExists(string username)
         {
-            if(await _context.Users.AnyAsync(x=>x.Username==username))
+            if(await _context.Users.AnyAsync(x=>x.UserName==username))
             return true;
             
             return false;

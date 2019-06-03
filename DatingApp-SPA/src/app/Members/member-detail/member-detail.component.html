@@ -1,6 +1,6 @@
 <div class="container mt-4">
   <div class="row">
-    <h4>{{user.username}}的个人信息</h4>
+    <h4>{{user.userName}}的个人信息</h4>
   </div>
    <div class="row">
      <div class="col-sm-4">
@@ -35,7 +35,7 @@
      <div class="col-sm-8">
     <div class="tab-panel">
       <tabset class="member-tabset" #memberTabs> <!--给定一个标识 #memberTabs-->
-        <tab heading="关于{{user?.username}}">
+        <tab heading="关于{{user?.userName}}">
           <h4>自我介绍</h4>
           <p>{{user.introduction}}</p>
           <h4>我在寻找</h4>
