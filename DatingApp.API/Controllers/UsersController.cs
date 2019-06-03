@@ -31,7 +31,7 @@ namespace DatingApp.API.Controllers
         {
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
 
-            var userFromRepo = await _repo.GetUser(currentUserId);
+            var userFromRepo = await _repo.GetUser(currentUserId, true);
 
             userParams.UserId = currentUserId;
 
@@ -49,7 +49,10 @@ namespace DatingApp.API.Controllers
         [HttpGet("{id}",Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
-            var user = await _repo.GetUser(id);
+            var isCurrentUser = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier).Value
+                ) == id; //先获取当前用户的NameIdentifier，在这里的话是int类型的id，然后转成int，最后比较是否等于传进来的id。相等，就是当前用户，不等就不是
+            var user = await _repo.GetUser(id, isCurrentUser);
             
             return Ok(_mapper.Map<UserForDetailDto>(user));
 
@@ -61,7 +64,7 @@ namespace DatingApp.API.Controllers
           if (id !=int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // User.FindFirst(ClaimTypes.NameIdentifier用来判断传递来的这个token中的id与浏览器中参数的id是否一致，如果不一致，说明用户数据可能被篡改，所以返回401
           return Unauthorized();
 
-          var userFromRepo = await _repo.GetUser(id);
+          var userFromRepo = await _repo.GetUser(id, true);
 
           _mapper.Map(userForUpdateDto,userFromRepo);
           if (await _repo.SaveAll())
@@ -80,7 +83,7 @@ namespace DatingApp.API.Controllers
             if (like != null)
             return BadRequest("您已经关注过该用户了");
 
-            if(await _repo.GetUser(recipientId) == null)
+            if(await _repo.GetUser(recipientId, false) == null)
              return NotFound();
              like = new Like // 如果当前账户的所有者没有关注id=recipientId的用户，那么就新增一条记录
              {

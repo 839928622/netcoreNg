@@ -9,7 +9,7 @@ namespace DatingApp.API.Models
         public DateTime DateAdded { get; set; }
         public bool IsMain { get; set; }
         public string PublicId { get; set; }
-
+        public bool IsApproved { get; set; } // 审核是否通过
         public User User { get; set; }
         public int UserId { get; set; }
     }

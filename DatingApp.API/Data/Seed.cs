@@ -54,7 +54,7 @@ var roles = new List<Role>
                     // user.UserName = user.UserName.ToLower();
 
                     // _context.Users.Add(user);
-
+                   user.Photos.SingleOrDefault().IsApproved = true; // 手动添加的时候设置图片为已经通过审核
                     _userManager.CreateAsync(user, "passwordD@1").Wait();
                     _userManager.AddToRoleAsync(user,"Member").Wait(); // 把用户添加至角色
                 }

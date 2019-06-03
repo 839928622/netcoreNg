@@ -58,7 +58,7 @@ namespace DatingApp.API.Controllers
              if (userId !=int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value)) // User.FindFirst(ClaimTypes.NameIdentifier用来判断传递来的这个token中的id与浏览器中参数的id是否一致，如果不一致，说明用户数据可能被篡改，所以返回401
           return Unauthorized();
 
-          var userFromRepo = await _repo.GetUser(userId);
+          var userFromRepo = await _repo.GetUser(userId, true);
 
           var file = photoForCreationDto.File;
 
@@ -107,7 +107,7 @@ namespace DatingApp.API.Controllers
            if (userId !=int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
            return Unauthorized();
 
-           var user = await _repo.GetUser(userId);
+           var user = await _repo.GetUser(userId,true);
 
            if (!user.Photos.Any(p=>p.Id==id))
            return Unauthorized(); //如果查询不到图片 返回401
@@ -136,7 +136,7 @@ namespace DatingApp.API.Controllers
         if (userId !=int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
            return Unauthorized();
 
-           var user = await _repo.GetUser(userId);
+           var user = await _repo.GetUser(userId, true);
 
            if(!user.Photos.Any(p =>p.Id == id))
              return Unauthorized();

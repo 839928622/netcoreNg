@@ -12,7 +12,7 @@ namespace DatingApp.API.Data
 
          Task<bool> SaveAll(); //保存所有
          Task<PageList<User>> GetUsers(UserParams userParams); //获取分页的用户
-         Task<User> GetUser(int id); //获取单个用户
+         Task<User> GetUser(int id, bool isCurrentUser); //获取单个用户
          Task<Photo> GetPhoto(int id);
          Task<Photo> GetMainPhotoForUser(int userId);
          Task<Like> GetLike (int userId ,int recipientId); //这两个都是用户的Id

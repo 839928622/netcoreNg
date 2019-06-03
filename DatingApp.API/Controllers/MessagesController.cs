@@ -83,13 +83,13 @@ namespace DatingApp.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
        {
-           var sender = await _repo.GetUser(userId);
+           var sender = await _repo.GetUser(userId, false);
 
            if(sender.Id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
             return Unauthorized();
 
             messageForCreationDto.SenderId = userId ;
-            var recipient = await _repo.GetUser(messageForCreationDto.RecipientId); //查询接收方是否存在
+            var recipient = await _repo.GetUser(messageForCreationDto.RecipientId, false); //查询接收方是否存在
 
             if (recipient == null )
                return BadRequest("对不起，找不到消息的接收方！"); // 不存在则返回 400
